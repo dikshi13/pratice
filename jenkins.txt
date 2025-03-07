@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    stages {
+        stage('Parallel Execution') {
+            parallel {
+                stage('Unit Tests') {
+                    steps { echo 'Running unit tests' }
+                }
+                stage('Security Scan') {
+                    steps { echo 'Running security scan' }
+                }
+                stage('Code Quality') {
+                    steps { echo 'Checking code quality' }
+                }
+            }
+        }
+    }
+}
