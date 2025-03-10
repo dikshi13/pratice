@@ -1,0 +1,141 @@
+Basic Jenkins Interview Questions
+1. What is Jenkins, and why is it used?
+Answer:
+Jenkins is an open-source automation server that helps in Continuous Integration (CI) and Continuous Deployment (CD). It automates the process of building, testing, and deploying applications, reducing manual intervention and improving software quality.
+
+Real-time Example:
+Imagine a software development team working on a banking application. When a developer pushes code changes to GitHub, Jenkins automatically fetches the latest code, compiles it, runs unit tests, and deploys the application to a test server. This ensures early detection of errors and smooth integration.
+
+2. What are the key features of Jenkins?
+Answer:
+Free & Open-Source: No licensing costs.
+Easy Installation: Simple setup with .war file or package manager.
+Extensible via Plugins: Supports hundreds of plugins for integrations.
+Distributed Builds: Supports master-slave architecture for parallel execution.
+Pipeline as Code: Automate CI/CD workflows using Jenkinsfile.
+Real-time Example:
+A gaming company developing an online game integrates Jenkins with Kubernetes to automatically deploy new updates to a cloud environment after testing.
+
+3. How does Jenkins work?
+Answer:
+Developer commits code to a repository (e.g., GitHub, GitLab, Bitbucket).
+Jenkins pulls the latest code and starts a build process.
+Jenkins compiles, runs tests, and checks code quality.
+If successful, Jenkins deploys the application to a test/staging/production environment.
+Developers get email/SMS notifications in case of success or failure.
+Real-time Example:
+A mobile app company uses Jenkins to automate the build process of an Android app. Every time a developer commits changes, Jenkins compiles the code using Gradle, runs tests, and generates the .apk file for testing.
+
+Intermediate Jenkins Interview Questions
+4. What is a Jenkins Pipeline?
+Answer:
+A Jenkins Pipeline is a set of automated steps written as code (Jenkinsfile) to define the entire CI/CD workflow. It has two types:
+
+Declarative Pipeline (easier syntax, recommended)
+Scripted Pipeline (powerful but complex)
+Real-time Example:
+A company deploying a web application uses a Jenkinsfile to define the pipeline:
+
+groovy
+Copy
+Edit
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'scp target/app.war user@server:/opt/tomcat/webapps/'
+            }
+        }
+    }
+}
+This ensures that every new code commit goes through build, test, and deployment automatically.
+
+5. What is the difference between a Freestyle Project and a Pipeline?
+Feature	Freestyle Project	Pipeline
+Setup	GUI-based	Code-based (Jenkinsfile)
+Flexibility	Limited	Highly flexible
+Reusability	Not reusable	Easily reusable
+Best for	Simple builds	Complex CI/CD workflows
+Real-time Example:
+A Freestyle Project is good for a simple Java project with a single build step.
+A Pipeline is needed for a microservices-based project where multiple builds, tests, and deployments are involved.
+6. How do you trigger a Jenkins job automatically?
+Answer:
+Jenkins jobs can be triggered automatically using:
+
+Poll SCM: Jenkins checks the Git repository at a fixed interval (e.g., H/5 * * * * to check every 5 minutes).
+Webhooks: GitHub/GitLab sends a notification to Jenkins when code changes.
+Build Triggers: Another job can trigger the current job after completion.
+Cron Jobs: Scheduled builds at specific times (e.g., 0 12 * * * for every day at 12 PM).
+Real-time Example:
+A company using GitHub and Jenkins configures a webhook so that whenever a developer pushes code, Jenkins automatically starts the build and test process.
+
+Advanced Jenkins Interview Questions
+7. What is Jenkins Master-Slave Architecture?
+Answer:
+Jenkins supports distributed builds using a Master-Slave architecture:
+
+Master Node: Handles job scheduling, UI, and reporting.
+Slave Nodes: Execute the jobs on different machines for parallel execution.
+Real-time Example:
+A company with heavy workloads (e.g., building and testing multiple applications) sets up:
+
+A Jenkins Master on a central server.
+Multiple Jenkins Slaves on different machines (Linux, Windows, macOS) to run parallel builds, reducing execution time.
+8. How do you secure Jenkins?
+Answer:
+Enable Role-Based Access Control (RBAC) using plugins.
+Use LDAP or Active Directory for authentication.
+Disable anonymous access to Jenkins.
+Enable HTTPS for secure connections.
+Use Secrets and Credentials plugins to store sensitive information.
+Real-time Example:
+A finance company ensures that only authorized developers can trigger production deployments by assigning permissions using Role-Based Strategy Plugin in Jenkins.
+
+9. What are some commonly used Jenkins plugins?
+Answer:
+Git Plugin – Integrates Jenkins with Git repositories.
+Pipeline Plugin – Enables CI/CD pipelines using code.
+Slack Notification Plugin – Sends build notifications to Slack.
+Credentials Plugin – Manages sensitive information securely.
+Kubernetes Plugin – Deploys applications to Kubernetes clusters.
+Real-time Example:
+An e-commerce company integrates Slack Plugin to notify the QA team about the build status automatically.
+
+10. How do you handle build failures in Jenkins?
+Answer:
+Check Console Output to identify the root cause.
+Use Retry Logic in Jenkinsfile (retry(3) { steps }).
+Configure Email Notifications for failed builds.
+Implement Automatic Rollbacks in the deployment stage.
+Real-time Example:
+A Jenkins pipeline deploying a microservice includes:
+
+groovy
+Copy
+Edit
+stage('Deploy') {
+    steps {
+        script {
+            try {
+                sh 'kubectl apply -f deployment.yaml'
+            } catch (Exception e) {
+                sh 'kubectl rollout undo deployment my-app'
+                error "Deployment failed, rolled back!"
+            }
+        }
+    }
+}
+This ensures that if the deployment fails, Jenkins automatically rolls back to the previous stable version.
+
